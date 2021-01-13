@@ -13,6 +13,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "build-layer": "node ./scripts/layer",
     "config": "node scripts/configure",
     "deconfig": "node scripts/deconfigure",
     "create-bucket": "cross-var aws s3 mb s3://$npm_package_config_s3BucketName --region $npm_package_config_region",
@@ -21,7 +22,7 @@
     "deploy": "cross-var aws cloudformation deploy --template-file sam-template.packaged.yaml --stack-name $npm_package_config_s3BucketName --capabilities CAPABILITY_IAM --region $npm_package_config_region --parameter-overrides DomainName=$npm_package_config_domain",
     "package-deploy": "npm run build && npm run package && npm run deploy",
     "delete-stack": "cross-var aws cloudformation delete-stack --stack-name $npm_package_config_s3BucketName --region $npm_package_config_region",
-    "setup": "npm install && npm run build && (cross-var aws s3api get-bucket-location --bucket $npm_package_config_s3BucketName --region $npm_package_config_region || npm run create-bucket) && npm run package-deploy",
+    "setup": "npm install && npm run build && (cross-var aws s3api get-bucket-location --bucket $npm_package_config_s3BucketName --region $npm_package_config_region || npm run create-bucket) && npm run build-layer && npm run package-deploy",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "local": "node scripts/local",

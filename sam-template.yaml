@@ -18,6 +18,14 @@ Resources:
   ExpressApi:
     Type: AWS::Serverless::HttpApi
 
+  DependenciesLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: ./layer
+      CompatibleRuntimes:
+        - nodejs12.x
+      RetentionPolicy: Delete
+
   ExpressLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -26,6 +34,8 @@ Resources:
       MemorySize: 128
       Runtime: nodejs12.x
       Timeout: 30
+      Layers:
+        - !Ref DependenciesLayer
       Events:
         ProxyApiRoot:
           Type: HttpApi

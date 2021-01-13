@@ -49,7 +49,7 @@ $ npm run start:prod
 
 ```bash
 # configure
-$ npm run config -- --region="YOUR_AWS_REGION" --function-name="YOUR_SERVERLESS_EXPRESS_LAMBDA_FUNCTION_NAME" --stage-name="YOUR_STAGE"
+$ npm run config [-- --region="YOUR_AWS_REGION" --function-name="YOUR_SERVERLESS_EXPRESS_LAMBDA_FUNCTION_NAME" --stage-name="YOUR_STAGE"]
 
 # deploy
 $ npm run setup
