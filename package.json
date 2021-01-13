@@ -6,10 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "config": {
-    "s3BucketName": "YOUR_STAGE-YOUR_SERVERLESS_EXPRESS_LAMBDA_FUNCTION_NAME",
-    "region": "test",
-    "cloudFormationStackName": "YOUR_STAGE-YOUR_SERVERLESS_EXPRESS_LAMBDA_FUNCTION_NAME",
-    "functionName": "YOUR_STAGE-YOUR_SERVERLESS_EXPRESS_LAMBDA_FUNCTION_NAME",
+    "s3BucketName": "YOUR_SERVERLESS_EXPRESS_LAMBDA_FUNCTION_NAME",
+    "region": "YOUR_AWS_REGION",
     "domain": ""
   },
   "scripts": {
@@ -20,9 +18,9 @@
     "create-bucket": "cross-var aws s3 mb s3://$npm_package_config_s3BucketName --region $npm_package_config_region",
     "delete-bucket": "cross-var aws s3 rb s3://$npm_package_config_s3BucketName --region $npm_package_config_region",
     "package": "cross-var aws cloudformation package --template ./sam-template.yaml --s3-bucket $npm_package_config_s3BucketName --output-template sam-template.packaged.yaml --region $npm_package_config_region",
-    "deploy": "cross-var aws cloudformation deploy --template-file sam-template.packaged.yaml --stack-name $npm_package_config_cloudFormationStackName --capabilities CAPABILITY_IAM --region $npm_package_config_region --parameter-overrides DomainName=$npm_package_config_domain",
+    "deploy": "cross-var aws cloudformation deploy --template-file sam-template.packaged.yaml --stack-name $npm_package_config_s3BucketName --capabilities CAPABILITY_IAM --region $npm_package_config_region --parameter-overrides DomainName=$npm_package_config_domain",
     "package-deploy": "npm run build && npm run package && npm run deploy",
-    "delete-stack": "cross-var aws cloudformation delete-stack --stack-name $npm_package_config_cloudFormationStackName --region $npm_package_config_region",
+    "delete-stack": "cross-var aws cloudformation delete-stack --stack-name $npm_package_config_s3BucketName --region $npm_package_config_region",
     "setup": "npm install && npm run build && (cross-var aws s3api get-bucket-location --bucket $npm_package_config_s3BucketName --region $npm_package_config_region || npm run create-bucket) && npm run package-deploy",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
