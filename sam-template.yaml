@@ -6,6 +6,22 @@ Parameters:
     Type: String
     Description: API Domain name
     Default: ''
+  Stage:
+    Type: String
+    Description: App Stage
+    Default: ''
+  Name:
+    Type: String
+    Description: App Name
+    Default: ''
+  Version:
+    Type: String
+    Description: App Version
+    Default: ''
+  Description:
+    Type: String
+    Description: App Description
+    Default: ''
 
 Conditions:
   UseDomainName:
@@ -13,6 +29,11 @@ Conditions:
       - !Equals
         - !Ref DomainName
         - ''
+  UseSwagger:
+    !Not
+      !Equals
+        - !Ref Stage
+        - 'prod'
 
 Resources:
   ExpressApi:
@@ -44,7 +65,6 @@ Resources:
       AutoPublishAlias: version
       Layers:
         - !Ref DependenciesLayer
-      
       Events:
         ProxyApiRoot:
           Type: Api
@@ -57,6 +77,38 @@ Resources:
           Properties:
             RestApiId: !Ref ExpressApi
             Path: /{proxy+}
+            Method: ANY
+
+  ExpressLambdaFunctionSwagger:
+    Type: AWS::Serverless::Function
+    Condition: UseSwagger
+    Properties:
+      CodeUri: ./dist
+      Handler: lambda-swagger.handler
+      MemorySize: 128
+      Runtime: nodejs12.x
+      Timeout: 30
+      AutoPublishAlias: version
+      VersionDescription: !Ref Version
+      Layers:
+        - !Ref DependenciesLayer
+      Environment:
+        Variables:
+          APP_TITLE: !Ref Name
+          APP_VERSION: !Ref Version
+          APP_DESCRIPTION: !Ref Description
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExpressApi
+            Path: /swagger
+            Method: ANY
+        ProxyApiGreedy:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExpressApi
+            Path: /swagger/{proxy+}
             Method: ANY
 
   MyApiCertificate:
