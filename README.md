@@ -71,6 +71,18 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Api
+
+```bash
+# localhost
+localhost:3000/
+localhost:3000/swagger
+
+# api gateway
+YOUR_HOST/live/
+YOUR_HOST/live/swagger
+```
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
