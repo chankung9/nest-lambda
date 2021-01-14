@@ -16,7 +16,14 @@ Conditions:
 
 Resources:
   ExpressApi:
-    Type: AWS::Serverless::HttpApi
+    Type: AWS::Serverless::Api
+    Properties:
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: ./simple-proxy-api.yaml
+      StageName: version
 
   DependenciesLayer:
     Type: AWS::Serverless::LayerVersion
@@ -34,13 +41,23 @@ Resources:
       MemorySize: 128
       Runtime: nodejs12.x
       Timeout: 30
+      AutoPublishAlias: version
       Layers:
         - !Ref DependenciesLayer
+      
       Events:
         ProxyApiRoot:
-          Type: HttpApi
+          Type: Api
           Properties:
-            ApiId: !Ref ExpressApi
+            RestApiId: !Ref ExpressApi
+            Path: /
+            Method: ANY
+        ProxyApiGreedy:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExpressApi
+            Path: /{proxy+}
+            Method: ANY
 
   MyApiCertificate:
     Type: 'AWS::CertificateManager::Certificate'
@@ -95,12 +112,12 @@ Outputs:
 
   ApiGatewayApiConsoleUrl:
     Description: Console URL for the API Gateway API's Stage.
-    Value: !Sub https://${AWS::Region}.console.aws.amazon.com/apigateway/home?region=${AWS::Region}#/apis/${ExpressApi}/stages/prod
+    Value: !Sub https://${AWS::Region}.console.aws.amazon.com/apigateway/home?region=${AWS::Region}#/apis/${ExpressApi}/resources
 
   ApiUrl:
     Description: Invoke URL for your API. Clicking this link will perform a GET request
       on the root resource of your API.
-    Value: !Sub https://${ExpressApi}.execute-api.${AWS::Region}.amazonaws.com/prod/
+    Value: !Sub https://${ExpressApi}.execute-api.${AWS::Region}.amazonaws.com/version
 
   LambdaFunctionName:
     Description: Name of the Serverless Express Lambda Function

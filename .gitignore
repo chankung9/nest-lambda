@@ -36,4 +36,4 @@ lerna-debug.log*
 # Lambda
 /layer
 lambda-invoke-response.json
-sam-template.packaged
+sam-template.packaged.yaml
