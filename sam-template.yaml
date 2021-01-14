@@ -31,7 +31,7 @@ Conditions:
         - ''
   UseSwagger:
     !Not
-      !Equals
+      - !Equals
         - !Ref Stage
         - 'prod'
 
@@ -44,7 +44,7 @@ Resources:
           Name: AWS::Include
           Parameters:
             Location: ./simple-proxy-api.yaml
-      StageName: version
+      StageName: live
 
   DependenciesLayer:
     Type: AWS::Serverless::LayerVersion
@@ -62,7 +62,7 @@ Resources:
       MemorySize: 128
       Runtime: nodejs12.x
       Timeout: 30
-      AutoPublishAlias: version
+      AutoPublishAlias: live
       Layers:
         - !Ref DependenciesLayer
       Events:
@@ -88,7 +88,7 @@ Resources:
       MemorySize: 128
       Runtime: nodejs12.x
       Timeout: 30
-      AutoPublishAlias: version
+      AutoPublishAlias: live
       VersionDescription: !Ref Version
       Layers:
         - !Ref DependenciesLayer

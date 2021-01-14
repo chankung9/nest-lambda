@@ -23,6 +23,7 @@ const bootstrapServer = async (): Promise<Server> => {
 
   app.use(eventContext())
   app.enableCors()
+  // app.setGlobalPrefix('live');
 
   const configService = app.get(ConfigService)
   const title = configService.get('APP_TITLE')
@@ -30,9 +31,11 @@ const bootstrapServer = async (): Promise<Server> => {
   const version = configService.get('APP_VERSION')
 
   const options = new DocumentBuilder()
+    // .setBasePath('live')
     .setTitle(title)
     .setDescription(description)
     .setVersion(version)
+    .addServer('/live')
     .addBearerAuth()
     .build()
   const document = SwaggerModule.createDocument(app, options)

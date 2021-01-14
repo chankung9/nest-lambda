@@ -22,7 +22,7 @@ async function bootstrap() {
     .setTitle(pjson.name)
     .setDescription(pjson.description)
     .setVersion(pjson.version)
-    // .addBearerAuth()
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options)
   SwaggerModule.setup('swagger', app, document)
