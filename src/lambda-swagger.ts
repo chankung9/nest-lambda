@@ -31,7 +31,6 @@ const bootstrapServer = async (): Promise<Server> => {
   const version = configService.get('APP_VERSION')
 
   const options = new DocumentBuilder()
-    // .setBasePath('live')
     .setTitle(title)
     .setDescription(description)
     .setVersion(version)
