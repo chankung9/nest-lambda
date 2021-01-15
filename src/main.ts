@@ -28,5 +28,6 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document)
 
   await app.listen(backendAppPort)
+  console.log(`----> listening in ${backendAppPort}`)
 }
 bootstrap()
