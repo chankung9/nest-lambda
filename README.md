@@ -32,6 +32,63 @@
 $ npm install
 ```
 
+## Environment
+
+```bash
+$ cp .env.example .env
+```
+## .env config
+
+```bash
+BACKEND_APP_PORT=
+DB_HOST=
+DB_PORT=
+DB_USERNAME=
+DB_PASSWORD=
+DB_DATABASE=
+```
+
+## Migrations
+
+# ormconfig.json
+
+```
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": "3307",
+  "username": "root",
+  "password": "admin",
+  "database": "test",
+  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "migrationsTableName": "migrations",
+  "migrations": ["migration/*{.ts,.js}"],
+  "cli": {
+      "migrationsDir": "migration"
+  }
+}
+```
+
+# generate migration from entity
+```bash
+$ npm run typeorm migration:generate -- -n MIGRATION_NAME
+```
+
+# create new migration
+```bash
+$ npm run typeorm migration:create -- -n MIGRATION_NAME
+```
+
+# run migration
+```bash
+$ npm run typeorm migration:run
+```
+
+# revert migration
+```bash
+$ npm run typeorm migration:revert
+```
+
 ## Running the app
 
 ```bash
